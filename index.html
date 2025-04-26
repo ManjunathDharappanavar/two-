@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Teams</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            min-height: 100vh;
+            color: #333;
+        }
+    
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+    
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #ff6f61;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+    
+        button:hover {
+            background-color: #ff3b2e;
+            transform: scale(1.05);
+        }
+    
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+    
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            background-color: white;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    
+        th {
+            background-color: #0077b6;
+            color: white;
+        }
+    
+        h2 {
+            margin-top: 30px;
+            color: #023e8a;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+    
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+    
+        ul li {
+            background: white;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1{
+            text-align: center;
+        }
+    </style>
+    
+</head>
+<body>
+    <h1>Two Team Maker</h1>
+    <input type="text" id="player">
+    <button onclick="addToArray()">Add player</button>
+    <button onclick="shuffleTeams()">Shuffle Teams</button>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Players</th>
+            </tr>
+        </thead>
+        <tbody id="array">
+            <!-- Players will go here -->
+        </tbody>
+    </table>
+
+    <h2>Team 1</h2>
+    <ul id="team1"></ul>
+
+    <h2>Team 2</h2>
+    <ul id="team2"></ul>
+
+    <script>
+        let playerArr = [];
+
+        function addToArray() {
+            let players = document.getElementById("player").value;
+
+            if (players.trim() !== "") {
+                playerArr.push(players);
+
+                let tableBody = document.getElementById("array");
+                let newRow = document.createElement("tr");
+                newRow.innerHTML = `<td>${players}</td>`;
+                tableBody.appendChild(newRow);
+
+                console.log(playerArr);
+
+                document.getElementById("player").value = "";
+            }
+        }
+
+        function shuffleTeams() {
+            // Step 1: Shuffle the array
+            let shuffled = [...playerArr]; // copy
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // swap
+            }
+
+            // Step 2: Split into two teams
+            let middle = Math.ceil(shuffled.length / 2);
+            let team1Arr = shuffled.slice(0, middle);
+            let team2Arr = shuffled.slice(middle);
+
+            // Step 3: Display the teams
+            let team1 = document.getElementById("team1");
+            let team2 = document.getElementById("team2");
+
+            team1.innerHTML = "";
+            team2.innerHTML = "";
+
+            team1Arr.forEach(player => {
+                let li = document.createElement("li");
+                li.innerText = player;
+                team1.appendChild(li);
+            });
+
+            team2Arr.forEach(player => {
+                let li = document.createElement("li");
+                li.innerText = player;
+                team2.appendChild(li);
+            });
+
+            console.log("Team 1:", team1Arr);
+            console.log("Team 2:", team2Arr);
+        }
+    </script>
+</body>
+</html>
